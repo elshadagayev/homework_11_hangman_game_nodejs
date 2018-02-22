@@ -21,7 +21,8 @@ For Linux:
 ```
 
 ### Used modules
-- inquirer
+* **inquirer v5.1.0**
+* **chalk v2.3.1**
 
 
 

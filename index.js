@@ -2,15 +2,18 @@ var Word = require("./my_modules/Word");
 var Words = require("./my_modules/Words");
 var inquirer = require("inquirer");
 var chalk = require('chalk');
+var HangmanDraw = require('./my_modules/hangman-draw');
 
 var wins = looses = 0;
 
 var tryCount = 0;
 var words = new Words();
 var word = null;
+var hangmanDraw = new HangmanDraw();
 
 
 word = getWord ();
+const TRY_LIMIT = 27;
 tryCount = setTryCount();
 
 console.log(chalk.bold("This is the Hangman game. You have to guess Car Manufacturers. So let's go!!!\n\n"));
@@ -41,6 +44,7 @@ function ask () {
 				console.log(chalk.green("\nCORRECT!!!", "Guesses left", tryCount--));
 			else {
 				console.log(chalk.red("\nTry again!", "Guesses left", tryCount--));
+				hangmanDraw.draw(TRY_LIMIT - tryCount);
 			}
 
 			if(word.guessedLetters.length)
@@ -53,6 +57,7 @@ function ask () {
 			}
 			else if(tryCount <= 0) {
 				console.log(chalk.bold(chalk.red("You lost!", "Car Manufacturer is", word.realWord)));
+				hangmanDraw.draw(TRY_LIMIT + 1);
 				looses++;
 			}
 
@@ -81,5 +86,5 @@ function getWord () {
 }
 
 function setTryCount () {
-	return word.length * 2;
+	return TRY_LIMIT;
 }

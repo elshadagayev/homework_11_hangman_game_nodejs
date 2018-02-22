@@ -1,6 +1,7 @@
 var Word = require("./my_modules/Word");
 var Words = require("./my_modules/Words");
 var inquirer = require("inquirer");
+var chalk = require('chalk');
 
 var wins = looses = 0;
 
@@ -12,13 +13,13 @@ var word = null;
 word = getWord ();
 tryCount = setTryCount();
 
-console.log("This is the Hangman game. You have to guess Car Manufacturers. So let's go!!!\n\n");
+console.log(chalk.bold("This is the Hangman game. You have to guess Car Manufacturers. So let's go!!!\n\n"));
 
 ask();
 
 function ask () {
 	if(!word.guessedLetters.length)
-		console.log("Manufacturer country is", word.country, ", Guesses left", tryCount);
+		console.log(chalk.yellow("Manufacturer country is", word.country, ", Guesses left", tryCount));
 	inquirer.prompt([
 		{
 			type: 'input',
@@ -37,21 +38,21 @@ function ask () {
 		var isCorrect = word.guess(res.letter);
 		if(!word.isFinished() && tryCount > 0) {
 			if(isCorrect)
-				console.log("\nCORRECT!!!", "Guesses left", tryCount--);
+				console.log(chalk.green("\nCORRECT!!!", "Guesses left", tryCount--));
 			else {
-				console.log("\nTry again!", "Guesses left", tryCount--);
+				console.log(chalk.red("\nTry again!", "Guesses left", tryCount--));
 			}
 
 			if(word.guessedLetters.length)
-				console.log("Guessed letters are", word.guessedLetters.join(", "), "\n\n");
+				console.log(chalk.bold("Guessed letters are", word.guessedLetters.join(", "), "\n\n"));
 			ask();
 		} else {
 			if(word.isFinished()) {
-				console.log("You won!", "Car Manufacturer is", word.toString());
+				console.log(chalk.bold(chalk.green("You won!", "Car Manufacturer is", word.toString())));
 				wins++;
 			}
 			else if(tryCount <= 0) {
-				console.log("You lost!", "Car Manufacturer is", word.realWord);
+				console.log(chalk.bold(chalk.red("You lost!", "Car Manufacturer is", word.realWord)));
 				looses++;
 			}
 
@@ -67,7 +68,7 @@ function ask () {
 					tryCount = setTryCount();
 					ask();
 				} else {
-					console.log("Wins:", wins + ",", "Looses:", looses + ".", "Bye!");
+					console.log(chalk.bold("\n\n--------------------------\n\Wins:", wins + ",", "Looses:", looses + ".", "Bye!\n--------------------------\n\n"));
 				}
 			})
 		}
